@@ -1,4 +1,4 @@
-package com.ayoub.pmsapp.entities.supplier;
+package com.ayoub.pmsapp.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,19 +15,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Supplier {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
-    private String tax_number;
-    private String telephone_number;
-    private String address;
+    private Double price;
     @ManyToOne
-    private Category category;
+    private ProductCategory productCategory;
+    @OneToOne
+    private ProductImage productImage;
+    private Long supplier_id;
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime created_at;
-
     @UpdateTimestamp
     private LocalDateTime updated_at;
 }
+

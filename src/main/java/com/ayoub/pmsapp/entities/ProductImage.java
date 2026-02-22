@@ -1,4 +1,4 @@
-package com.ayoub.pmsapp.entities.product;
+package com.ayoub.pmsapp.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
@@ -21,5 +21,5 @@ public class Image {
     @Lob
     private byte[] image;
     @OneToOne
-    private Category category;
+    private ProductCategory productCategory;
 }

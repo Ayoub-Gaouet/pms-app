@@ -1,9 +1,10 @@
-package com.ayoub.pmsapp.service.product;
+package com.ayoub.pmsapp.service.Impl;
 
 import com.ayoub.pmsapp.dto.ProductDTO;
-import com.ayoub.pmsapp.entities.product.Product;
-import com.ayoub.pmsapp.repo.product.ImageRepository;
-import com.ayoub.pmsapp.repo.product.ProductRepository;
+import com.ayoub.pmsapp.entities.Product;
+import com.ayoub.pmsapp.repository.ImageRepository;
+import com.ayoub.pmsapp.repository.ProductRepository;
+import com.ayoub.pmsapp.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Long oldProdImageId =
-                this.findProductById(productDTO.getId()).getImage().getId();
-        Long newProdImageId = productDTO.getImage().getId();
+                this.findProductById(productDTO.getId()).getProductImage().getId();
+        Long newProdImageId = productDTO.getProductImage().getId();
         ProductDTO avUpdated = convertEntityToDto(productRepository.save(convertDtoToEntity(productDTO)));
         if (oldProdImageId != newProdImageId) //si l'image a été modifiée
             imageRepository.deleteById(oldProdImageId);
@@ -42,8 +43,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO updateProduct(ProductDTO productDTO) {
         Long oldProdImageId =
-                this.findProductById(productDTO.getId()).getImage().getId();
-        Long newProdImageId = productDTO.getImage().getId();
+                this.findProductById(productDTO.getId()).getProductImage().getId();
+        Long newProdImageId = productDTO.getProductImage().getId();
         ProductDTO avUpdated = convertEntityToDto(productRepository.save(convertDtoToEntity(productDTO)));
         if (oldProdImageId != newProdImageId) //si l'image a été modifiée
             imageRepository.deleteById(oldProdImageId);

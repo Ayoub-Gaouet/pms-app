@@ -1,8 +1,8 @@
-package com.ayoub.pmsapp.repo.supplier;
+package com.ayoub.pmsapp.repository;
 
-import com.ayoub.pmsapp.entities.supplier.Supplier;
+import com.ayoub.pmsapp.entities.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
-    Supplier findByCategoryId(long id);
+    Supplier findFirstBySupplierCategory_Id(long id);
 }

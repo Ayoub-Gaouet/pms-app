@@ -1,10 +1,11 @@
-package com.ayoub.pmsapp.service.supplier;
+package com.ayoub.pmsapp.service.Impl;
 
 import com.ayoub.pmsapp.dto.SupplierDTO;
-import com.ayoub.pmsapp.entities.supplier.Category;
-import com.ayoub.pmsapp.entities.supplier.Supplier;
-import com.ayoub.pmsapp.repo.supplier.CategoryRepository;
-import com.ayoub.pmsapp.repo.supplier.SupplierRepository;
+import com.ayoub.pmsapp.entities.SupplierCategory;
+import com.ayoub.pmsapp.entities.Supplier;
+import com.ayoub.pmsapp.repository.SupplierCategoryRepository;
+import com.ayoub.pmsapp.repository.SupplierRepository;
+import com.ayoub.pmsapp.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class SupplierServiceImpl implements SupplierService {
     private SupplierRepository supplierRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private SupplierCategoryRepository supplierCategoryRepository;
 
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
@@ -34,7 +35,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier findSupplierByIdCategory(long id) {
-        return supplierRepository.findByCategoryId(id);
+        return supplierRepository.findFirstBySupplierCategory_Id(id);
     }
 
     @Override
@@ -44,9 +45,9 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setTax_number(supplierDTO.getTax_number());
         supplier.setTelephone_number(supplierDTO.getTelephone_number());
         supplier.setAddress(supplierDTO.getAddress());
-        Category category = categoryRepository.findById(supplierDTO.getCategoryId())
+        SupplierCategory supplierCategory = supplierCategoryRepository.findById(supplierDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + supplierDTO.getCategoryId()));
-        supplier.setCategory(category);
+        supplier.setSupplierCategory(supplierCategory);
         return supplierRepository.save(supplier);
     }
 
@@ -58,9 +59,9 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setTax_number(supplierDTO.getTax_number());
         supplier.setTelephone_number(supplierDTO.getTelephone_number());
         supplier.setAddress(supplierDTO.getAddress());
-        Category category = categoryRepository.findById(supplierDTO.getCategoryId())
+        SupplierCategory supplierCategory = supplierCategoryRepository.findById(supplierDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + supplierDTO.getCategoryId()));
-        supplier.setCategory(category);
+        supplier.setSupplierCategory(supplierCategory);
         return supplierRepository.save(supplier);
     }
 }

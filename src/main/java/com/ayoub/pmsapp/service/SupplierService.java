@@ -1,7 +1,7 @@
-package com.ayoub.pmsapp.service.supplier;
+package com.ayoub.pmsapp.service;
 
 import com.ayoub.pmsapp.dto.SupplierDTO;
-import com.ayoub.pmsapp.entities.supplier.Supplier;
+import com.ayoub.pmsapp.entities.Supplier;
 
 import java.util.List;
 

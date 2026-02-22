@@ -1,4 +1,4 @@
-package com.ayoub.pmsapp.entities.supplier;
+package com.ayoub.pmsapp.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -17,12 +17,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Category {
+public class SupplierCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "supplierCategory")
     @JsonIgnore
     private List<Supplier> suppliers;
     @CreationTimestamp

@@ -1,8 +1,8 @@
-package com.ayoub.pmsapp.controllers.supplier;
+package com.ayoub.pmsapp.controllers;
 
 import com.ayoub.pmsapp.dto.SupplierDTO;
-import com.ayoub.pmsapp.entities.supplier.Supplier;
-import com.ayoub.pmsapp.service.supplier.SupplierService;
+import com.ayoub.pmsapp.entities.Supplier;
+import com.ayoub.pmsapp.service.SupplierService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
