@@ -1,6 +1,6 @@
-package com.ayoub.pmsapp.service;
+package com.ayoub.pmsapp.service.supplier;
 
-import com.ayoub.pmsapp.entities.Category;
+import com.ayoub.pmsapp.entities.supplier.Category;
 
 import java.util.List;
 

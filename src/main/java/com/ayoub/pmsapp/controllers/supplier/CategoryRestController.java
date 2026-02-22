@@ -1,7 +1,7 @@
-package com.ayoub.pmsapp.controllers;
+package com.ayoub.pmsapp.controllers.supplier;
 
-import com.ayoub.pmsapp.entities.Category;
-import com.ayoub.pmsapp.service.CategoryService;
+import com.ayoub.pmsapp.entities.supplier.Category;
+import com.ayoub.pmsapp.service.supplier.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

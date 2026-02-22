@@ -1,10 +1,10 @@
-package com.ayoub.pmsapp.service;
+package com.ayoub.pmsapp.service.supplier;
 
 import com.ayoub.pmsapp.dto.SupplierDTO;
-import com.ayoub.pmsapp.entities.Category;
-import com.ayoub.pmsapp.entities.Supplier;
-import com.ayoub.pmsapp.repo.CategoryRepository;
-import com.ayoub.pmsapp.repo.SupplierRepository;
+import com.ayoub.pmsapp.entities.supplier.Category;
+import com.ayoub.pmsapp.entities.supplier.Supplier;
+import com.ayoub.pmsapp.repo.supplier.CategoryRepository;
+import com.ayoub.pmsapp.repo.supplier.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
