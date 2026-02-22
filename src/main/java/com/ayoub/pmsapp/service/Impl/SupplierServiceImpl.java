@@ -27,7 +27,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier findSupplierById(long id) {
+    public Supplier findSupplierById(Long id) {
         return supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
     }
     @Override
@@ -44,7 +44,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier updateSupplier(long id, SupplierDTO supplierDTO) {
+    public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
         supplier.setName(supplierDTO.getName());

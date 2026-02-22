@@ -25,7 +25,9 @@ public class Product {
     private ProductCategory productCategory;
     @OneToOne
     private ProductImage productImage;
-    private Long supplier_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime created_at;

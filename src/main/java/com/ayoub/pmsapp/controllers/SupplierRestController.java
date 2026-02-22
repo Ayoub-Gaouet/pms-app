@@ -23,7 +23,7 @@ public class SupplierRestController {
     }
 
     @GetMapping("/{id}")
-    public Supplier findSupplierById(@PathVariable long id){
+    public Supplier findSupplierById(@PathVariable Long id){
         return supplierService.findSupplierById(id);
     }
 
@@ -33,7 +33,7 @@ public class SupplierRestController {
     }
 
     @PutMapping("/{id}")
-    public Supplier updateSupplier(@PathVariable long id, @RequestBody SupplierDTO supplierDTO){
+    public Supplier updateSupplier(@PathVariable Long id, @RequestBody SupplierDTO supplierDTO){
         return supplierService.updateSupplier(id, supplierDTO);
     }
 
