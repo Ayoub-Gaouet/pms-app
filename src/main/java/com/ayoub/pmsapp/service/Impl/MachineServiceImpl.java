@@ -4,19 +4,22 @@ import com.ayoub.pmsapp.dto.MachineRequestDTO;
 import com.ayoub.pmsapp.dto.MachineResponseDTO;
 import com.ayoub.pmsapp.entities.Machine;
 import com.ayoub.pmsapp.entities.MachineState;
+import com.ayoub.pmsapp.entities.Technician;
 import com.ayoub.pmsapp.exception.ResourceNotFoundException;
 import com.ayoub.pmsapp.repository.MachineRepository;
+import com.ayoub.pmsapp.repository.TechnicianRepository;
 import com.ayoub.pmsapp.service.MachineService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class MachineServiceImpl implements MachineService {
-    final MachineRepository machineRepository;
+    private final MachineRepository machineRepository;
+    private final TechnicianRepository technicianRepository;
 
-    public MachineServiceImpl(MachineRepository machineRepository) {
+    public MachineServiceImpl(MachineRepository machineRepository, TechnicianRepository technicianRepository) {
         this.machineRepository = machineRepository;
+        this.technicianRepository = technicianRepository;
     }
     @Override
     public MachineResponseDTO createMachine(MachineRequestDTO dto) {
@@ -54,6 +57,11 @@ public class MachineServiceImpl implements MachineService {
     @Override
     public void deleteMachine(Long id) {
         Machine m = findOrThrow(id);
+        List<Technician> assigned = technicianRepository.findByMachineAssigneeId(id);
+        for (Technician t : assigned) {
+            t.setMachineAssignee(null);
+        }
+        technicianRepository.saveAll(assigned);
         machineRepository.delete(m);
     }
     private Machine findOrThrow(Long id) {
