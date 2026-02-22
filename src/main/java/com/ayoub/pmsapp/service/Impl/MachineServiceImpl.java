@@ -22,36 +22,55 @@ public class MachineServiceImpl implements MachineService {
         this.technicianRepository = technicianRepository;
     }
     @Override
-    public MachineResponseDTO createMachine(MachineRequestDTO dto) {
+    public MachineResponseDTO convertEntityToDto(Machine machine) {
+        return new MachineResponseDTO(
+                machine.getId(),
+                machine.getNom(),
+                machine.getEtat(),
+                machine.getMaintenanceProchaine()
+        );
+    }
+
+    @Override
+    public Machine convertDtoToEntity(MachineRequestDTO dto) {
         Machine m = new Machine();
         m.setNom(dto.getNom());
         m.setEtat(dto.getEtat());
         m.setMaintenanceProchaine(dto.getMaintenanceProchaine());
+        return m;
+    }
+
+    @Override
+    public MachineResponseDTO createMachine(MachineRequestDTO dto) {
+        Machine m = convertDtoToEntity(dto);
         Machine saved = machineRepository.save(m);
-        return toDto(saved);    }
+        return convertEntityToDto(saved);
+    }
 
     @Override
     public MachineResponseDTO getMachineById(Long id) {
-        return toDto(findOrThrow(id));
+        return convertEntityToDto(findOrThrow(id));
     }
 
     @Override
     public List<MachineResponseDTO> getAllMachines() {
-        return machineRepository.findAll().stream().map(this::toDto).toList();
+        return machineRepository.findAll().stream().map(this::convertEntityToDto).toList();
     }
 
     @Override
     public List<MachineResponseDTO> getMachineByEtat(MachineState etat) {
-        return machineRepository.findByEtat(etat).stream().map(this::toDto).toList();
+        return machineRepository.findByEtat(etat).stream().map(this::convertEntityToDto).toList();
     }
 
     @Override
     public MachineResponseDTO updateMachine(Long id, MachineRequestDTO dto) {
         Machine m = findOrThrow(id);
-        m.setNom(dto.getNom());
-        m.setEtat(dto.getEtat());
-        m.setMaintenanceProchaine(dto.getMaintenanceProchaine());
-        return toDto(machineRepository.save(m));
+        Machine fromDto = convertDtoToEntity(dto);
+        m.setNom(fromDto.getNom());
+        m.setEtat(fromDto.getEtat());
+        m.setMaintenanceProchaine(fromDto.getMaintenanceProchaine());
+        Machine saved = machineRepository.save(m);
+        return convertEntityToDto(saved);
     }
 
     @Override
@@ -67,8 +86,5 @@ public class MachineServiceImpl implements MachineService {
     private Machine findOrThrow(Long id) {
         return machineRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Machine not found with id=" + id));
-    }
-    private MachineResponseDTO toDto(Machine m) {
-        return new MachineResponseDTO(m.getId(), m.getNom(), m.getEtat(), m.getMaintenanceProchaine());
     }
 }

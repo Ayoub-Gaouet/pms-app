@@ -13,6 +13,6 @@ public interface ProductService {
     void deleteProduct(Long id);
     ProductDTO findProductById(Long id);
 
-    ProductDTO convertEntityToDto (Product avions);
-    Product convertDtoToEntity(ProductDTO avionDTO);
+    ProductDTO convertEntityToDto (Product product);
+    Product convertDtoToEntity(ProductDTO productDTO);
 }
