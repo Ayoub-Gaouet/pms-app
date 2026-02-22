@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ProductDTO {
     private Long id;
     private String name;
-    private Double price;
+    private Integer stock;
     private ProductImage productImage;
     private Long categoryId;
     private Long supplierId;
