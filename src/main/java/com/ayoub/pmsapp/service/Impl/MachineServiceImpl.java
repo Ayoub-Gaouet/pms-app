@@ -49,7 +49,7 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public MachineResponseDTO getMachineById(Long id) {
-        return convertEntityToDto(findOrThrow(id));
+        return convertEntityToDto(findMachineById(id));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public MachineResponseDTO updateMachine(Long id, MachineRequestDTO dto) {
-        Machine m = findOrThrow(id);
+        Machine m = findMachineById(id);
         Machine fromDto = convertDtoToEntity(dto);
         m.setNom(fromDto.getNom());
         m.setEtat(fromDto.getEtat());
@@ -75,7 +75,7 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public void deleteMachine(Long id) {
-        Machine m = findOrThrow(id);
+        Machine m = findMachineById(id);
         List<Technician> assigned = technicianRepository.findByMachineAssigneeId(id);
         for (Technician t : assigned) {
             t.setMachineAssignee(null);
@@ -83,7 +83,8 @@ public class MachineServiceImpl implements MachineService {
         technicianRepository.saveAll(assigned);
         machineRepository.delete(m);
     }
-    private Machine findOrThrow(Long id) {
+    @Override
+    public Machine findMachineById(Long id) {
         return machineRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Machine not found with id=" + id));
     }

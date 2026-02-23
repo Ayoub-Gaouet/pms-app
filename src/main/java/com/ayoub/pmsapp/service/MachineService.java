@@ -19,4 +19,6 @@ public interface MachineService {
     List<MachineResponseDTO> getMachineByEtat(MachineState etat);
     MachineResponseDTO updateMachine(Long id, MachineRequestDTO dto);
     void deleteMachine(Long id);
+
+    Machine findMachineById(Long id);
 }
