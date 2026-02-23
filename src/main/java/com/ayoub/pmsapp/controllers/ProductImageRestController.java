@@ -2,6 +2,7 @@ package com.ayoub.pmsapp.controllers;
 
 import com.ayoub.pmsapp.entities.ProductImage;
 import com.ayoub.pmsapp.service.ImageService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,7 @@ public class ProductImageRestController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteImage(@PathVariable("id") Long id) {
         imageService.deleteImage(id);
     }

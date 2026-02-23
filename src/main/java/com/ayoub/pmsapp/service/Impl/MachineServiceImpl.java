@@ -9,6 +9,7 @@ import com.ayoub.pmsapp.exception.ResourceNotFoundException;
 import com.ayoub.pmsapp.repository.MachineRepository;
 import com.ayoub.pmsapp.repository.TechnicianRepository;
 import com.ayoub.pmsapp.service.MachineService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,28 +17,21 @@ import java.util.List;
 public class MachineServiceImpl implements MachineService {
     private final MachineRepository machineRepository;
     private final TechnicianRepository technicianRepository;
+    private final ModelMapper modelMapper;
 
-    public MachineServiceImpl(MachineRepository machineRepository, TechnicianRepository technicianRepository) {
+    public MachineServiceImpl(MachineRepository machineRepository, TechnicianRepository technicianRepository, ModelMapper modelMapper) {
         this.machineRepository = machineRepository;
         this.technicianRepository = technicianRepository;
+        this.modelMapper = modelMapper;
     }
     @Override
     public MachineResponseDTO convertEntityToDto(Machine machine) {
-        return new MachineResponseDTO(
-                machine.getId(),
-                machine.getNom(),
-                machine.getEtat(),
-                machine.getMaintenanceProchaine()
-        );
+        return modelMapper.map(machine, MachineResponseDTO.class);
     }
 
     @Override
     public Machine convertDtoToEntity(MachineRequestDTO dto) {
-        Machine m = new Machine();
-        m.setNom(dto.getNom());
-        m.setEtat(dto.getEtat());
-        m.setMaintenanceProchaine(dto.getMaintenanceProchaine());
-        return m;
+        return modelMapper.map(dto, Machine.class);
     }
 
     @Override

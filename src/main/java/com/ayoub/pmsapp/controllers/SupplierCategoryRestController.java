@@ -2,6 +2,7 @@ package com.ayoub.pmsapp.controllers;
 
 import com.ayoub.pmsapp.entities.SupplierCategory;
 import com.ayoub.pmsapp.service.SupplierCategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class SupplierCategoryRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public SupplierCategory deleteCategory(@PathVariable long id) {
         return supplierCategoryService.deleteCategory(id);
     }
