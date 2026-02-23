@@ -1,16 +1,21 @@
 package com.ayoub.pmsapp.service;
 
-import com.ayoub.pmsapp.dto.SupplierDTO;
+import com.ayoub.pmsapp.dto.SupplierRequestDTO;
+import com.ayoub.pmsapp.dto.SupplierResponseDTO;
 import com.ayoub.pmsapp.entities.Supplier;
 
 import java.util.List;
 
 public interface SupplierService {
-    List<Supplier> getAllSuppliers();
+    List<SupplierResponseDTO> getAllSuppliers();
 
-    Supplier findSupplierById(Long id);
+    SupplierResponseDTO findSupplierById(Long id);
 
-    Supplier saveSupplier(SupplierDTO supplierDTO);
+    SupplierResponseDTO saveSupplier(SupplierRequestDTO supplierDTO);
 
-    Supplier updateSupplier(Long id, SupplierDTO supplierDTO);
+    SupplierResponseDTO updateSupplier(Long id, SupplierRequestDTO supplierDTO);
+
+    Supplier convertDtoToEntity(SupplierRequestDTO supplierDTO);
+
+    SupplierResponseDTO convertEntityToDto(Supplier supplier);
 }

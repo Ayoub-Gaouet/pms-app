@@ -9,10 +9,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SupplierDTO {
+public class SupplierResponseDTO {
+    private Long id;
     private String name;
     private String tax_number;
     private String telephone_number;
     private String address;
     private Long categoryId;
+    private String categoryName;
 }
+
