@@ -1,18 +1,19 @@
 package com.ayoub.pmsapp.service;
 
-import com.ayoub.pmsapp.dto.ProductDTO;
+import com.ayoub.pmsapp.dto.ProductRequestDTO;
+import com.ayoub.pmsapp.dto.ProductResponseDTO;
 import com.ayoub.pmsapp.entities.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    List<ProductResponseDTO> getAllProducts();
 
-    ProductDTO saveProduct(ProductDTO productDTO);
-    ProductDTO updateProduct(ProductDTO productDTO);
+    ProductResponseDTO saveProduct(ProductRequestDTO productDTO);
+    ProductResponseDTO updateProduct(Long id, ProductRequestDTO productDTO);
     void deleteProduct(Long id);
-    ProductDTO findProductById(Long id);
+    ProductResponseDTO findProductById(Long id);
 
-    ProductDTO convertEntityToDto (Product product);
-    Product convertDtoToEntity(ProductDTO productDTO);
+    ProductResponseDTO convertEntityToDto (Product product);
+    Product convertDtoToEntity(ProductRequestDTO productDTO);
 }

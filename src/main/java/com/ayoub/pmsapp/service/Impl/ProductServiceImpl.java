@@ -1,6 +1,7 @@
 package com.ayoub.pmsapp.service.Impl;
 
-import com.ayoub.pmsapp.dto.ProductDTO;
+import com.ayoub.pmsapp.dto.ProductRequestDTO;
+import com.ayoub.pmsapp.dto.ProductResponseDTO;
 import com.ayoub.pmsapp.entities.Product;
 import com.ayoub.pmsapp.entities.ProductCategory;
 import com.ayoub.pmsapp.entities.Supplier;
@@ -10,7 +11,6 @@ import com.ayoub.pmsapp.repository.ProductRepository;
 import com.ayoub.pmsapp.repository.SupplierRepository;
 import com.ayoub.pmsapp.service.ProductService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,44 +35,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> getAllProducts() {
+        return productRepository.findAll().stream().map(this::convertEntityToDto).toList();
     }
 
     @Override
-    public ProductDTO saveProduct(ProductDTO productDTO) {
+    public ProductResponseDTO saveProduct(ProductRequestDTO productDTO) {
         Product product = convertDtoToEntity(productDTO);
-        if (productDTO.getId() != null) {
-            Product existing = productRepository.findById(productDTO.getId())
-                    .orElseThrow(() -> new RuntimeException("Product not found with id: " + productDTO.getId()));
-            if (existing.getProductImage() != null && productDTO.getProductImage() != null) {
-                Long oldProdImageId = existing.getProductImage().getId();
-                Long newProdImageId = productDTO.getProductImage().getId();
-                if (!oldProdImageId.equals(newProdImageId)) {
-                    imageRepository.deleteById(oldProdImageId);
-                }
-            }
-        }
         Product saved = productRepository.save(product);
         return convertEntityToDto(saved);
     }
 
     @Override
-    public ProductDTO updateProduct(ProductDTO productDTO) {
-        if (productDTO.getId() == null) {
-            throw new RuntimeException("Product id is required for update");
-        }
-        Product existing = productRepository.findById(productDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productDTO.getId()));
-        if (existing.getProductImage() != null && productDTO.getProductImage() != null) {
-            Long oldProdImageId = existing.getProductImage().getId();
-            Long newProdImageId = productDTO.getProductImage().getId();
-            if (!oldProdImageId.equals(newProdImageId)) {
-                imageRepository.deleteById(oldProdImageId);
-            }
-        }
-        Product product = convertDtoToEntity(productDTO);
-        Product saved = productRepository.save(product);
+    public ProductResponseDTO updateProduct(Long id, ProductRequestDTO productDTO) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        Product updated = convertDtoToEntity(productDTO);
+        updated.setId(id);
+        updated.setProductImage(existing.getProductImage()); // conserver l'image si non modifiée
+        Product saved = productRepository.save(updated);
         return convertEntityToDto(saved);
     }
 
@@ -82,27 +63,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO findProductById(Long id) {
+    public ProductResponseDTO findProductById(Long id) {
         return convertEntityToDto(productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found with id: " + id)));
     }
 
-
     @Override
-    public ProductDTO convertEntityToDto(Product product) {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-        if (product.getProductCategory() != null) {
-            productDTO.setCategoryId(product.getProductCategory().getId());
-        }
-        if (product.getSupplier() != null) {
-            productDTO.setSupplierId(product.getSupplier().getId());
-        }
-        return productDTO;
+    public ProductResponseDTO convertEntityToDto(Product product) {
+        ProductResponseDTO productResponseDTO = modelMapper.map(product, ProductResponseDTO.class);
+        if (product.getProductCategory() != null) productResponseDTO.setCategoryId(product.getProductCategory().getId());
+        if (product.getSupplier() != null) productResponseDTO.setSupplierId(product.getSupplier().getId());
+        return productResponseDTO;
     }
 
     @Override
-    public Product convertDtoToEntity(ProductDTO productDTO) {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+    public Product convertDtoToEntity(ProductRequestDTO productDTO) {
         Product product = modelMapper.map(productDTO, Product.class);
         if (productDTO.getCategoryId() != null) {
             ProductCategory category = productCategoryRepository.findById(productDTO.getCategoryId())
@@ -113,6 +87,9 @@ public class ProductServiceImpl implements ProductService {
             Supplier supplier = supplierRepository.findById(productDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + productDTO.getSupplierId()));
             product.setSupplier(supplier);
+        }
+        if (productDTO.getProductImageId() != null) {
+            product.setProductImage(imageRepository.findById(productDTO.getProductImageId()).orElse(null));
         }
         return product;
     }
