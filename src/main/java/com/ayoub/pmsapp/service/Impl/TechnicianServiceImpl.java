@@ -10,6 +10,7 @@ import com.ayoub.pmsapp.repository.MachineRepository;
 import com.ayoub.pmsapp.repository.SkillRepository;
 import com.ayoub.pmsapp.repository.TechnicianRepository;
 import com.ayoub.pmsapp.service.TechnicianService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,32 +22,36 @@ public class TechnicianServiceImpl implements TechnicianService {
     private final TechnicianRepository technicianRepository;
     private final SkillRepository skillRepository;
     private final MachineRepository machineRepository;
+    private final ModelMapper modelMapper;
 
     public TechnicianServiceImpl(TechnicianRepository technicianRepository,
                                  SkillRepository skillRepository,
-                                 MachineRepository machineRepository) {
+                                 MachineRepository machineRepository,
+                                 ModelMapper modelMapper) {
         this.technicianRepository = technicianRepository;
         this.skillRepository = skillRepository;
         this.machineRepository = machineRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     @Transactional(readOnly = true)
     public TechnicianResponseDTO convertEntityToDto(Technician technician) {
-        return new TechnicianResponseDTO(
-                technician.getId(),
-                technician.getNom(),
-                technician.getSkill() != null ? technician.getSkill().getId() : null,
-                technician.getSkill() != null ? technician.getSkill().getName() : null,
-                technician.getMachineAssignee() != null ? technician.getMachineAssignee().getId() : null,
-                technician.getMachineAssignee() != null ? technician.getMachineAssignee().getNom() : null
-        );
+        TechnicianResponseDTO dto = modelMapper.map(technician, TechnicianResponseDTO.class);
+        if (technician.getSkill() != null) {
+            dto.setSkillId(technician.getSkill().getId());
+            dto.setSkillName(technician.getSkill().getName());
+        }
+        if (technician.getMachineAssignee() != null) {
+            dto.setMachineAssigneeId(technician.getMachineAssignee().getId());
+            dto.setMachineAssigneeNom(technician.getMachineAssignee().getNom());
+        }
+        return dto;
     }
 
     @Override
     public Technician convertDtoToEntity(TechnicianRequestDTO dto) {
-        Technician t = new Technician();
-        t.setNom(dto.getNom());
+        Technician t = modelMapper.map(dto, Technician.class);
         setSkillIfPresent(t, dto.getSkillId());
         setMachineIfPresent(t, dto.getMachineAssigneeId());
         return t;

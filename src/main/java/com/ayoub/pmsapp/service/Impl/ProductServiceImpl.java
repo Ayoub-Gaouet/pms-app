@@ -102,9 +102,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product convertDtoToEntity(ProductDTO productDTO) {
-        Product product = new Product();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        modelMapper.map(productDTO, product);
+        Product product = modelMapper.map(productDTO, Product.class);
         if (productDTO.getCategoryId() != null) {
             ProductCategory category = productCategoryRepository.findById(productDTO.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found with id: " + productDTO.getCategoryId()));
