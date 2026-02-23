@@ -63,7 +63,7 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     @Transactional(readOnly = true)
     public TechnicianResponseDTO getTechnicianById(Long id) {
-        return convertEntityToDto(findTechnicianOrThrow(id));
+        return convertEntityToDto(findTechnicianById(id));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     @Transactional
     public TechnicianResponseDTO updateTechnician(Long id, TechnicianRequestDTO dto) {
-        Technician existing = findTechnicianOrThrow(id);
+        Technician existing = findTechnicianById(id);
         Technician fromDto = convertDtoToEntity(dto);
         existing.setNom(fromDto.getNom());
         existing.setSkill(fromDto.getSkill());
@@ -99,14 +99,14 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     @Transactional
     public void deleteTechnician(Long id) {
-        Technician t = findTechnicianOrThrow(id);
+        Technician t = findTechnicianById(id);
         technicianRepository.delete(t);
     }
 
     @Override
     @Transactional
     public TechnicianResponseDTO assignToMachine(Long technicianId, Long machineId) {
-        Technician t = findTechnicianOrThrow(technicianId);
+        Technician t = findTechnicianById(technicianId);
         Machine m = findMachineOrThrow(machineId);
         t.setMachineAssignee(m);
         Technician saved = technicianRepository.save(t);
@@ -116,13 +116,14 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     @Transactional
     public TechnicianResponseDTO unassignFromMachine(Long technicianId) {
-        Technician t = findTechnicianOrThrow(technicianId);
+        Technician t = findTechnicianById(technicianId);
         t.setMachineAssignee(null);
         Technician saved = technicianRepository.save(t);
         return convertEntityToDto(saved);
     }
 
-    private Technician findTechnicianOrThrow(Long id) {
+    @Override
+    public Technician findTechnicianById(Long id) {
         return technicianRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Technician not found with id=" + id));
     }

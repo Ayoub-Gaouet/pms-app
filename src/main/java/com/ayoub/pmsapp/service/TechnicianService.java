@@ -29,4 +29,5 @@ public interface TechnicianService {
     TechnicianResponseDTO assignToMachine(Long technicianId, Long machineId);
 
     TechnicianResponseDTO unassignFromMachine(Long technicianId);
+    Technician findTechnicianById(Long id);
 }
