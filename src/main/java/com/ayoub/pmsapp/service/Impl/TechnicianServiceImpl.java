@@ -37,31 +37,31 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     @Transactional(readOnly = true)
     public TechnicianResponseDTO convertEntityToDto(Technician technician) {
-        TechnicianResponseDTO dto = modelMapper.map(technician, TechnicianResponseDTO.class);
+        TechnicianResponseDTO technicianResponseDTO = modelMapper.map(technician, TechnicianResponseDTO.class);
         if (technician.getSkill() != null) {
-            dto.setSkillId(technician.getSkill().getId());
-            dto.setSkillName(technician.getSkill().getName());
+            technicianResponseDTO.setSkillId(technician.getSkill().getId());
+            technicianResponseDTO.setSkillName(technician.getSkill().getName());
         }
         if (technician.getMachineAssignee() != null) {
-            dto.setMachineAssigneeId(technician.getMachineAssignee().getId());
-            dto.setMachineAssigneeNom(technician.getMachineAssignee().getNom());
+            technicianResponseDTO.setMachineAssigneeId(technician.getMachineAssignee().getId());
+            technicianResponseDTO.setMachineAssigneeNom(technician.getMachineAssignee().getNom());
         }
-        return dto;
+        return technicianResponseDTO;
     }
 
     @Override
     public Technician convertDtoToEntity(TechnicianRequestDTO dto) {
-        Technician t = modelMapper.map(dto, Technician.class);
-        setSkillIfPresent(t, dto.getSkillId());
-        setMachineIfPresent(t, dto.getMachineAssigneeId());
-        return t;
+        Technician technician = modelMapper.map(dto, Technician.class);
+        setSkillIfPresent(technician, dto.getSkillId());
+        setMachineIfPresent(technician, dto.getMachineAssigneeId());
+        return technician;
     }
 
     @Override
     @Transactional
-    public TechnicianResponseDTO createTechnician(TechnicianRequestDTO dto) {
-        Technician t = convertDtoToEntity(dto);
-        Technician saved = technicianRepository.save(t);
+    public TechnicianResponseDTO createTechnician(TechnicianRequestDTO technicianRequestDTO) {
+        Technician technician = convertDtoToEntity(technicianRequestDTO);
+        Technician saved = technicianRepository.save(technician);
         return convertEntityToDto(saved);
     }
 
@@ -111,10 +111,10 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     @Transactional
     public TechnicianResponseDTO assignToMachine(Long technicianId, Long machineId) {
-        Technician t = findTechnicianById(technicianId);
-        Machine m = findMachineOrThrow(machineId);
-        t.setMachineAssignee(m);
-        Technician saved = technicianRepository.save(t);
+        Technician technician = findTechnicianById(technicianId);
+        Machine machine = findMachineOrThrow(machineId);
+        technician.setMachineAssignee(machine);
+        Technician saved = technicianRepository.save(technician);
         return convertEntityToDto(saved);
     }
 
@@ -138,23 +138,23 @@ public class TechnicianServiceImpl implements TechnicianService {
                 .orElseThrow(() -> new ResourceNotFoundException("Machine not found with id=" + id));
     }
 
-    private void setSkillIfPresent(Technician t, Long skillId) {
+    private void setSkillIfPresent(Technician technician, Long skillId) {
         if (skillId == null) {
-            t.setSkill(null);
+            technician.setSkill(null);
             return;
         }
         Skill skill = skillRepository.findById(skillId)
                 .orElseThrow(() -> new ResourceNotFoundException("Skill not found with id=" + skillId));
-        t.setSkill(skill);
+        technician.setSkill(skill);
     }
 
-    private void setMachineIfPresent(Technician t, Long machineId) {
+    private void setMachineIfPresent(Technician technician, Long machineId) {
         if (machineId == null) {
-            t.setMachineAssignee(null);
+            technician.setMachineAssignee(null);
             return;
         }
         Machine machine = machineRepository.findById(machineId)
                 .orElseThrow(() -> new ResourceNotFoundException("Machine not found with id=" + machineId));
-        t.setMachineAssignee(machine);
+        technician.setMachineAssignee(machine);
     }
 }

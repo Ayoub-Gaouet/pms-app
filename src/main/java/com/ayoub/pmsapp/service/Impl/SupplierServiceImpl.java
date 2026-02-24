@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
-    private SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
 
     private final SupplierCategoryRepository supplierCategoryRepository;
 
@@ -71,11 +71,11 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public SupplierResponseDTO convertEntityToDto(Supplier supplier) {
-        SupplierResponseDTO dto = modelMapper.map(supplier, SupplierResponseDTO.class);
+        SupplierResponseDTO supplierResponseDTO = modelMapper.map(supplier, SupplierResponseDTO.class);
         if (supplier.getSupplierCategory() != null) {
-            dto.setCategoryId(supplier.getSupplierCategory().getId());
-            dto.setCategoryName(supplier.getSupplierCategory().getName());
+            supplierResponseDTO.setCategoryId(supplier.getSupplierCategory().getId());
+            supplierResponseDTO.setCategoryName(supplier.getSupplierCategory().getName());
         }
-        return dto;
+        return supplierResponseDTO;
     }
 }

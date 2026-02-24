@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class SupplierCategoryServiceImpl implements SupplierCategoryService {
-    private SupplierCategoryRepository supplierCategoryRepository;
+    private final SupplierCategoryRepository supplierCategoryRepository;
 
     public SupplierCategoryServiceImpl(SupplierCategoryRepository supplierCategoryRepository) {
         this.supplierCategoryRepository = supplierCategoryRepository;
