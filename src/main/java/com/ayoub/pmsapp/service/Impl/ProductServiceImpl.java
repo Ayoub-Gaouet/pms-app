@@ -63,15 +63,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDTO convertEntityToDto(Product product) {
-        ProductResponseDTO productResponseDTO = modelMapper.map(product, ProductResponseDTO.class);
-        if (product.getProductCategory() != null) productResponseDTO.setCategoryId(product.getProductCategory().getId());
-        if (product.getSupplier() != null) productResponseDTO.setSupplierId(product.getSupplier().getId());
+        ProductResponseDTO productResponseDTO = new ProductResponseDTO();
+        productResponseDTO.setId(product.getId());
+        productResponseDTO.setName(product.getName());
+        productResponseDTO.setStock(product.getStock());
+        if (product.getProductCategory() != null) {
+            productResponseDTO.setCategoryId(product.getProductCategory().getId());
+            productResponseDTO.setCategoryName(product.getProductCategory().getNom());
+        }
+        if (product.getSupplier() != null) {
+            productResponseDTO.setSupplierId(product.getSupplier().getId());
+            productResponseDTO.setSupplierName(product.getSupplier().getName());
+        }
+        productResponseDTO.setCreated_at(product.getCreated_at());
+        productResponseDTO.setUpdated_at(product.getUpdated_at());
         return productResponseDTO;
     }
 
     @Override
     public Product convertDtoToEntity(ProductRequestDTO productDTO) {
-        Product product = modelMapper.map(productDTO, Product.class);
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setStock(productDTO.getStock());
         if (productDTO.getCategoryId() != null) {
             ProductCategory category = productCategoryRepository.findById(productDTO.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found with id: " + productDTO.getCategoryId()));
