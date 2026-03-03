@@ -3,6 +3,7 @@ package com.ayoub.pmsapp.controllers;
 import com.ayoub.pmsapp.dto.SupplierRequestDTO;
 import com.ayoub.pmsapp.dto.SupplierResponseDTO;
 import com.ayoub.pmsapp.service.SupplierService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,12 @@ public class SupplierRestController {
     @PutMapping("/{id}")
     public SupplierResponseDTO updateSupplier(@PathVariable Long id, @RequestBody SupplierRequestDTO supplierDTO){
         return supplierService.updateSupplier(id, supplierDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSupplier(@PathVariable Long id){
+        supplierService.deleteSupplier(id);
     }
 
 }

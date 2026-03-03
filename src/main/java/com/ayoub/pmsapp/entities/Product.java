@@ -23,8 +23,6 @@ public class Product {
     private Integer stock;
     @ManyToOne
     private ProductCategory productCategory;
-    @OneToOne
-    private ProductImage productImage;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;

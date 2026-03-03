@@ -5,7 +5,6 @@ import com.ayoub.pmsapp.dto.ProductResponseDTO;
 import com.ayoub.pmsapp.entities.Product;
 import com.ayoub.pmsapp.entities.ProductCategory;
 import com.ayoub.pmsapp.entities.Supplier;
-import com.ayoub.pmsapp.repository.ImageRepository;
 import com.ayoub.pmsapp.repository.ProductCategoryRepository;
 import com.ayoub.pmsapp.repository.ProductRepository;
 import com.ayoub.pmsapp.repository.SupplierRepository;
@@ -19,16 +18,14 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ImageRepository imageRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final SupplierRepository supplierRepository;
     final ModelMapper modelMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ImageRepository imageRepository,
+    public ProductServiceImpl(ProductRepository productRepository,
                               ProductCategoryRepository productCategoryRepository, SupplierRepository supplierRepository,
                               ModelMapper modelMapper) {
         this.productRepository = productRepository;
-        this.imageRepository = imageRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.supplierRepository = supplierRepository;
         this.modelMapper = modelMapper;
@@ -48,11 +45,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO productDTO) {
-        Product existing = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         Product updated = convertDtoToEntity(productDTO);
         updated.setId(id);
-        updated.setProductImage(existing.getProductImage()); // conserver l'image si non modifiée
         Product saved = productRepository.save(updated);
         return convertEntityToDto(saved);
     }
@@ -87,9 +81,6 @@ public class ProductServiceImpl implements ProductService {
             Supplier supplier = supplierRepository.findById(productDTO.getSupplierId())
                     .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + productDTO.getSupplierId()));
             product.setSupplier(supplier);
-        }
-        if (productDTO.getProductImageId() != null) {
-            product.setProductImage(imageRepository.findById(productDTO.getProductImageId()).orElse(null));
         }
         return product;
     }

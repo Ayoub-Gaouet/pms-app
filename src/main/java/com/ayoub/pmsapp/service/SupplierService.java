@@ -15,6 +15,8 @@ public interface SupplierService {
 
     SupplierResponseDTO updateSupplier(Long id, SupplierRequestDTO supplierDTO);
 
+    void deleteSupplier(Long id);
+
     Supplier convertDtoToEntity(SupplierRequestDTO supplierDTO);
 
     SupplierResponseDTO convertEntityToDto(Supplier supplier);

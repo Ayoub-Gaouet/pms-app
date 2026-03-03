@@ -12,7 +12,6 @@ import lombok.Setter;
 public class ProductRequestDTO {
     private String name;
     private Integer stock;
-    private Long productImageId;
     private Long categoryId;
     private Long supplierId;
 }

@@ -59,8 +59,22 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    public void deleteSupplier(Long id) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
+        if (supplier.getProducts() != null && !supplier.getProducts().isEmpty()) {
+            throw new RuntimeException("Cannot delete supplier with id: " + id + " because it has associated products.");
+        }
+        supplierRepository.delete(supplier);
+    }
+
+    @Override
     public Supplier convertDtoToEntity(SupplierRequestDTO dto) {
-        Supplier supplier = modelMapper.map(dto, Supplier.class);
+        Supplier supplier = new Supplier();
+        supplier.setName(dto.getName());
+        supplier.setTax_number(dto.getTax_number());
+        supplier.setTelephone_number(dto.getTelephone_number());
+        supplier.setAddress(dto.getAddress());
         if (dto.getCategoryId() != null) {
             SupplierCategory category = supplierCategoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found with id: " + dto.getCategoryId()));
@@ -76,6 +90,8 @@ public class SupplierServiceImpl implements SupplierService {
             supplierResponseDTO.setCategoryId(supplier.getSupplierCategory().getId());
             supplierResponseDTO.setCategoryName(supplier.getSupplierCategory().getName());
         }
+        supplierResponseDTO.setCreated_at(supplier.getCreated_at());
+        supplierResponseDTO.setUpdated_at(supplier.getUpdated_at());
         return supplierResponseDTO;
     }
 }
