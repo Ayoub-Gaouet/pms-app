@@ -13,6 +13,7 @@ public interface ProductService {
     ProductResponseDTO updateProduct(Long id, ProductRequestDTO productDTO);
     void deleteProduct(Long id);
     ProductResponseDTO findProductById(Long id);
+    List<ProductResponseDTO> findProductsByCategory(Long categoryId);
 
     ProductResponseDTO convertEntityToDto (Product product);
     Product convertDtoToEntity(ProductRequestDTO productDTO);

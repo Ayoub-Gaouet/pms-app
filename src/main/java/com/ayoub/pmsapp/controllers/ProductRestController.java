@@ -41,5 +41,10 @@ public class ProductRestController {
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
+
+    @GetMapping("/category/{categoryId}")
+    public List<ProductResponseDTO> getProductsByCategory(@PathVariable Long categoryId) {
+        return productService.findProductsByCategory(categoryId);
+    }
 }
 
