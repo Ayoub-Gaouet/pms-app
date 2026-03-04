@@ -46,5 +46,10 @@ public class ProductRestController {
     public List<ProductResponseDTO> getProductsByCategory(@PathVariable Long categoryId) {
         return productService.findProductsByCategory(categoryId);
     }
+
+    @RequestMapping(value="/prodsByName/{nom}",method = RequestMethod.GET)
+    public List<ProductResponseDTO> findByNomProduitContains(@PathVariable("nom") String nom) {
+        return productService.findByNomProduitContains(nom);
+    }
 }
 

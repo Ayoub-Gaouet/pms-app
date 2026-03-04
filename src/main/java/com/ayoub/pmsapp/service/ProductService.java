@@ -8,13 +8,12 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductResponseDTO> getAllProducts();
-
     ProductResponseDTO saveProduct(ProductRequestDTO productDTO);
     ProductResponseDTO updateProduct(Long id, ProductRequestDTO productDTO);
     void deleteProduct(Long id);
     ProductResponseDTO findProductById(Long id);
     List<ProductResponseDTO> findProductsByCategory(Long categoryId);
-
+    List<ProductResponseDTO> findByNomProduitContains(String nom);
     ProductResponseDTO convertEntityToDto (Product product);
     Product convertDtoToEntity(ProductRequestDTO productDTO);
 }

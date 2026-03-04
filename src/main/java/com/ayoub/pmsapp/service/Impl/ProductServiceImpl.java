@@ -67,6 +67,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResponseDTO> findByNomProduitContains(String nom) {
+        return productRepository.findByNameContains(nom).stream().map(this::convertEntityToDto).toList();
+    }
+
+    @Override
     public ProductResponseDTO convertEntityToDto(Product product) {
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
         productResponseDTO.setId(product.getId());
