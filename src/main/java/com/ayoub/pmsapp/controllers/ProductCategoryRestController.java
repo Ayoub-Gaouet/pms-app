@@ -1,7 +1,9 @@
 package com.ayoub.pmsapp.controllers;
 
-import com.ayoub.pmsapp.entities.ProductCategory;
+import com.ayoub.pmsapp.dto.ProductCategoryRequestDTO;
+import com.ayoub.pmsapp.dto.ProductCategoryResponseDTO;
 import com.ayoub.pmsapp.service.ProductCategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,32 +13,30 @@ import java.util.List;
 @RequestMapping("/api/cat")
 @CrossOrigin("*")
 public class ProductCategoryRestController {
-    final ProductCategoryService productCategoryService;
+    private final ProductCategoryService productCategoryService;
 
     public ProductCategoryRestController(ProductCategoryService productCategoryService) {
         this.productCategoryService = productCategoryService;
     }
 
     @GetMapping
-    public List<ProductCategory> getAllCategories()
-    {
+    public List<ProductCategoryResponseDTO> getAllCategories() {
         return productCategoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public ProductCategory findCategoryById(@PathVariable("id") Long id) {
+    public ProductCategoryResponseDTO findCategoryById(@PathVariable("id") Long id) {
         return productCategoryService.findCategoryById(id);
     }
 
     @PostMapping
-    public ProductCategory saveCategory(@RequestBody ProductCategory productCategory) {
-        return productCategoryService.saveCategory(productCategory);
+    public ProductCategoryResponseDTO saveCategory(@Valid @RequestBody ProductCategoryRequestDTO productCategoryDTO) {
+        return productCategoryService.saveCategory(productCategoryDTO);
     }
 
     @PutMapping("/{id}")
-    public ProductCategory updateCategory(@PathVariable Long id, @RequestBody ProductCategory productCategory) {
-        productCategory.setId(id);
-        return productCategoryService.updateCategory(productCategory);
+    public ProductCategoryResponseDTO updateCategory(@PathVariable Long id, @Valid @RequestBody ProductCategoryRequestDTO productCategoryDTO) {
+        return productCategoryService.updateCategory(id, productCategoryDTO);
     }
 
     @DeleteMapping("/{id}")
