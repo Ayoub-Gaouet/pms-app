@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -27,4 +30,8 @@ public class Technician {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "machine_assignee_id")
     private Machine machineAssignee;
+    @Column(updatable = false)
+    private LocalDateTime created_at;
+    @UpdateTimestamp
+    private LocalDateTime updated_at;
 }

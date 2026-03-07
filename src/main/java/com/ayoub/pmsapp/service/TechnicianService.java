@@ -1,5 +1,6 @@
 package com.ayoub.pmsapp.service;
 
+import com.ayoub.pmsapp.dto.ProductResponseDTO;
 import com.ayoub.pmsapp.dto.TechnicianRequestDTO;
 import com.ayoub.pmsapp.dto.TechnicianResponseDTO;
 import com.ayoub.pmsapp.entities.Technician;
@@ -30,4 +31,7 @@ public interface TechnicianService {
 
     TechnicianResponseDTO unassignFromMachine(Long technicianId);
     Technician findTechnicianById(Long id);
+
+    List<TechnicianResponseDTO> findTechniciansBySkill(Long categoryId);
+    List<TechnicianResponseDTO> findByNomTechnicianContains(String nom);
 }

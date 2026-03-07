@@ -133,6 +133,16 @@ public class TechnicianServiceImpl implements TechnicianService {
                 .orElseThrow(() -> new ResourceNotFoundException("Technician not found with id=" + id));
     }
 
+    @Override
+    public List<TechnicianResponseDTO> findTechniciansBySkill(Long categoryId) {
+        return technicianRepository.findBySkillId(categoryId).stream().map(this::convertEntityToDto).toList();
+    }
+
+    @Override
+    public List<TechnicianResponseDTO> findByNomTechnicianContains(String nom) {
+        return technicianRepository.findByNomContains(nom).stream().map(this::convertEntityToDto).toList();
+    }
+
     private Machine findMachineOrThrow(Long id) {
         return machineRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Machine not found with id=" + id));

@@ -11,11 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TechnicianRequestDTO {
-
     @NotBlank(message = "nom is required")
     private String nom;
-
     private Long skillId;
-
     private Long machineAssigneeId;
 }

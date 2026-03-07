@@ -11,14 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TechnicianResponseDTO {
-
+public class SkillResponseDTO {
     private Long id;
-    private String nom;
-    private Long skillId;
-    private String skillName;
-    private Long machineAssigneeId;
-    private String machineAssigneeNom;
+    private String name;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 }
+

@@ -1,5 +1,6 @@
 package com.ayoub.pmsapp.controllers;
 
+import com.ayoub.pmsapp.dto.SupplierResponseDTO;
 import com.ayoub.pmsapp.dto.TechnicianRequestDTO;
 import com.ayoub.pmsapp.dto.TechnicianResponseDTO;
 import com.ayoub.pmsapp.service.TechnicianService;
@@ -61,5 +62,14 @@ public class TechnicianRestController {
     @PutMapping("/{technicianId}/unassign-machine")
     public TechnicianResponseDTO unassignFromMachine(@PathVariable Long technicianId) {
         return technicianService.unassignFromMachine(technicianId);
+    }
+
+    @GetMapping("/skill/{skillId}")
+    public List<TechnicianResponseDTO> getTechniciansBySkill(@PathVariable Long skillId) {
+        return technicianService.findTechniciansBySkill(skillId);
+    }
+    @RequestMapping(value="/techsByName/{nom}",method = RequestMethod.GET)
+    public List<TechnicianResponseDTO> findByNomContains(@PathVariable("nom") String nom) {
+        return technicianService.findByNomTechnicianContains(nom);
     }
 }
