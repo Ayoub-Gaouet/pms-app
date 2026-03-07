@@ -1,5 +1,6 @@
 package com.ayoub.pmsapp.service.Impl;
 
+import com.ayoub.pmsapp.dto.ProductResponseDTO;
 import com.ayoub.pmsapp.dto.SupplierRequestDTO;
 import com.ayoub.pmsapp.dto.SupplierResponseDTO;
 import com.ayoub.pmsapp.entities.SupplierCategory;
@@ -67,7 +68,15 @@ public class SupplierServiceImpl implements SupplierService {
         }
         supplierRepository.delete(supplier);
     }
+    @Override
+    public List<SupplierResponseDTO> findSuppliersByCategory(Long categoryId) {
+        return supplierRepository.findBySupplierCategoryId(categoryId).stream().map(this::convertEntityToDto).toList();
+    }
 
+    @Override
+    public List<SupplierResponseDTO> findByNameContains(String nom) {
+        return supplierRepository.findByNameContains(nom).stream().map(this::convertEntityToDto).toList();
+    }
     @Override
     public Supplier convertDtoToEntity(SupplierRequestDTO dto) {
         Supplier supplier = new Supplier();

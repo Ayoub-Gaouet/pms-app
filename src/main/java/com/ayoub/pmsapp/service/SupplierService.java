@@ -16,7 +16,8 @@ public interface SupplierService {
     SupplierResponseDTO updateSupplier(Long id, SupplierRequestDTO supplierDTO);
 
     void deleteSupplier(Long id);
-
+    List<SupplierResponseDTO> findSuppliersByCategory(Long categoryId);
+    List<SupplierResponseDTO> findByNameContains(String nom);
     Supplier convertDtoToEntity(SupplierRequestDTO supplierDTO);
 
     SupplierResponseDTO convertEntityToDto(Supplier supplier);

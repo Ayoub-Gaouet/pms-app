@@ -1,5 +1,6 @@
 package com.ayoub.pmsapp.controllers;
 
+import com.ayoub.pmsapp.dto.ProductResponseDTO;
 import com.ayoub.pmsapp.dto.SupplierRequestDTO;
 import com.ayoub.pmsapp.dto.SupplierResponseDTO;
 import com.ayoub.pmsapp.service.SupplierService;
@@ -44,4 +45,13 @@ public class SupplierRestController {
         supplierService.deleteSupplier(id);
     }
 
+    @GetMapping("/category/{categoryId}")
+    public List<SupplierResponseDTO> getSuppliersByCategory(@PathVariable Long categoryId) {
+        return supplierService.findSuppliersByCategory(categoryId);
+    }
+
+    @RequestMapping(value="/name/{nom}",method = RequestMethod.GET)
+    public List<SupplierResponseDTO> findByNomContains(@PathVariable("nom") String nom) {
+        return supplierService.findByNameContains(nom);
+    }
 }
