@@ -52,6 +52,7 @@ public class TechnicianServiceImpl implements TechnicianService {
     @Override
     public Technician convertDtoToEntity(TechnicianRequestDTO dto) {
         Technician technician = modelMapper.map(dto, Technician.class);
+        technician.setId(null); // Fix ModelMapper implicit ID mapping
         setSkillIfPresent(technician, dto.getSkillId());
         setMachineIfPresent(technician, dto.getMachineAssigneeId());
         return technician;
