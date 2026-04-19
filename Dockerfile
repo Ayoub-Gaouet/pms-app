@@ -1,14 +1,16 @@
-# Utilise l'image officielle Eclipse Temurin Java 17 comme image de base
-FROM eclipse-temurin:17-jdk-jammy
-
-# Répertoire de travail dans le conteneur
+# Étape 1 : Build du JAR avec Maven
+FROM eclipse-temurin:17-jdk-jammy AS build
 WORKDIR /app
+COPY mvnw ./
+COPY .mvn .mvn
+COPY pom.xml ./
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+COPY src src
+RUN ./mvnw clean package -DskipTests -B
 
-# Copie le jar généré dans le conteneur
-COPY target/pms-app-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose le port utilisé par Spring Boot
+# Étape 2 : Image runtime minimale
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY --from=build /app/target/pms-app-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Commande de lancement de l'application
 ENTRYPOINT ["java", "-jar", "app.jar"]
