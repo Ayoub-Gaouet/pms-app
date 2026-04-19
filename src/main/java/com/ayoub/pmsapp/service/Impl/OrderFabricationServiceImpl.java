@@ -119,7 +119,16 @@ public class OrderFabricationServiceImpl implements OrderFabricationService {
 
     @Override
     public OrderFabrication convertDtoToEntity(OrderFabricationRequestDTO dto) {
-        return modelMapper.map(dto, OrderFabrication.class);
+        Product produit = findProduitOrThrow(dto.getProduitId());
+        Machine machine = findMachineOrThrow(dto.getMachineId());
+        OrderFabrication ordre = new OrderFabrication();
+        ordre.setProduit(produit);
+        ordre.setQuantite(dto.getQuantite());
+        ordre.setDate(dto.getDate());
+        ordre.setMachine(machine);
+        ordre.setStatut(dto.getStatut());
+        // L'id n'est pas défini ici, il sera généré par JPA
+        return ordre;
     }
 
 
